@@ -1,0 +1,25 @@
+a {
+    font-size: 20px;
+    color: purple;
+    text-align: justify;
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 60px;
+    text-align: justify;
+}
+
+p,
+li {
+    font-size: 20px;
+    line-height: 2;
+    letter-spacing: 1px;
+}
+
+body {
+    width: 650px;
+    margin: 0 25%;
+    background: linear-gradient(to top, #2639fa, #c9d1ff);
+}
+
