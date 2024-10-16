@@ -1,0 +1,60 @@
+nav a {
+    display: block;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+    nav a:hover {
+        background-color: red;
+    }
+
+nav {
+    background-color: rgb(139, 0, 0);
+}
+
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    nav li {
+        flex: 1;
+    }
+
+body {
+    background-image: url('‘ÓÌ.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+main {
+    padding: 20px;
+}
+
+p {
+    font-family: 'Arial', 'Verdana', sans-serif;
+    font-size: 20px;
+    color: white;
+}
+
+li {
+    font-size: 20px;
+    color: white;
+}
+
+h1 {
+    color: white;
+}
+
+h2 {
+    color: white;
+}
+
+h3 {
+    color: white;
+}
+
+
