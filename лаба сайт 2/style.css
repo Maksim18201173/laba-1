@@ -57,4 +57,19 @@ h3 {
     color: white;
 }
 
+.scale {
+    transition: 1s;
+}
 
+    .scale:hover {
+        transform: scale(1.2); 
+    }
+footer{
+    background-color: rgba(248,249,250,0.1);
+    text-align:center;
+    padding:1px;
+}
+.Basket {
+    position: relative;
+    left: 1650px;
+}
