@@ -73,3 +73,16 @@ footer{
     position: relative;
     left: 1650px;
 }
+h1.food {
+    text-align: center;
+}
+h2.food {
+    text-align: center;
+}
+h1.post {
+    text-align: center;
+}
+h1.Cit {
+    text-align: center;
+}
+
