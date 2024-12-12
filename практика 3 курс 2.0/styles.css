@@ -1,0 +1,176 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(153, 102, 204, 0.4); /* Фиолетовый с прозрачностью */
+}
+
+header {
+    background-color: rgba(0, 128, 0, 0.65); /* Зеленый с прозрачностью */
+    padding: 10px;
+    display: flex;
+    justify-content: space-between; /* Распределяет элементы по краям */
+    align-items: center;
+}
+
+header .logo-container {
+    display: flex;
+    justify-content: center; /* Центрирует логотип */
+    flex-grow: 1; /* Занимает всю доступную ширину */
+    margin-left: -20px; /* Сдвигаем логотип левее */
+}
+
+header img {
+    height: 50px;
+}
+
+header span {
+    color: #D9D9D9; /* Белый текст */
+    margin-left: 20px;
+    font-size: 18px; /* Увеличенный размер текста номера */
+}
+
+header button {
+    background-color: #D9D9D9; /* Белый фон */
+    color: #000000; /* Черный текст */
+    border: none;
+    padding: 10px 15px; /* Увеличенный размер кнопок */
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 16px; /* Увеличенный размер текста кнопок */
+}
+
+header .buttons-container {
+    display: flex;
+    gap: 10px; /* Уменьшенное расстояние между кнопками "Вход" и "Регистрация" */
+}
+
+main {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Выравнивание по центру */
+}
+
+main h1 {
+    color: #000000; /* Черный текст */
+    text-align: center; /* Выравнивание по центру */
+    margin-bottom: 40px; /* Увеличенное расстояние между заголовком и контентом */
+}
+
+main .content {
+    display: flex;
+    justify-content: center; /* Распределяет элементы по краям */
+    align-items: center;
+    gap: 135px; /* Расстояние между фото и текстом */
+    margin-top: 20px; /* Дополнительное расстояние сверху */
+    width: 100%; /* Контент занимает всю ширину */
+}
+
+main img {
+    width: 50%;
+    max-width: 600px;
+    margin: 0;
+    height: auto; /* Автоматическая высота для сохранения пропорций */
+}
+
+main p {
+    color: #000000; /* Черный текст */
+    background-color: rgba(255, 255, 255, 0.8); /* Белый фон с прозрачностью */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 50%; /* Ограничение ширины текста */
+    text-align: center; /* Выравнивание по центру */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Тень для "коробки" */
+    height: auto; /* Автоматическая высота для сохранения пропорций */
+    display: flex;
+    align-items: center; /* Выравнивание текста по вертикали */
+}
+
+footer {
+    background-color: rgba(0, 128, 0, 0.65); /* Зеленый с прозрачностью */
+    color: #FFFFFF; /* Белый текст */
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Стили для форм */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form input {
+    background-color: rgba(0, 128, 0, 0.35); /* Зеленый с прозрачностью */
+    color: #000000; /* Черный текст */
+    border: none;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+form button {
+    background-color: rgba(0, 128, 0, 0.4); /* Зеленый с прозрачностью */
+    color: #000000; /* Черный текст */
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.site-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 24px;
+}
+
+.registration-form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    margin: 50px auto;
+}
+
+.registration-form h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
