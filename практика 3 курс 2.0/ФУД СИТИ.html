@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление товара</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="site-container">
+        <header>
+           
+            <div class="logo-container">
+                <img src="лого.png" alt="ФУД СИТИ">
+            </div>
+            
+        </header>
+        <main>
+            <h1>Добавление товара</h1>
+            <div class="registration-form">
+                <form>
+                    <div class="form-group">
+                        <label for="category">Категория товара</label>
+                        <input type="text" id="category" name="category" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Название</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Количество товара</label>
+                        <input type="number" id="quantity" name="quantity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expiration">Срок годности</label>
+                        <input type="date" id="expiration" name="expiration" required>
+                    </div>
+                    <button type="button" onclick="location.href='Товары.html'">Добавить товар</button>
+                    <button type="button" onclick="location.href='Товары.html'">Перейти к товарам</button>
+                </form>
+            </div>
+        </main>
+        
+    </div>
+</body>
+</html>
