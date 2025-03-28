@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина - ФудСити Дистрибьютор</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>ФудСити Дистрибьютор</h1>
+            <p>Официальный поставщик продуктов ФудСити</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="about.html">О нас</a></li>
+                <li><a href="products.html">Товары</a></li>
+                <li><a href="cart.html" class="active">Корзина</a></li>
+                <li><a href="login.html" id="auth-link">Войти</a></li>
+                <li><a href="register.html" id="reg-link">Регистрация</a></li>
+                <li><a href="admin_index.html" id="admin-link" style="display:none;">Админ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="cart">
+            <h2>Ваша корзина</h2>
+            
+            <div id="cartItems">
+                <!-- Товары в корзине будут загружаться через JavaScript -->
+            </div>
+            
+            <div class="cart-summary">
+                <h3>Итого: <span id="cartTotal">0</span> руб.</h3>
+                <button id="checkoutBtn" class="btn">Оформить заказ</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; <span id="year"></span> Официальный дистрибьютор ФудСити. Все права защищены.</p>
+    </footer>
+
+    <script src="js_auth.js"></script>
+    <script src="js_script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartTotalElement = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            
+            function updateCart() {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cartItemsContainer.innerHTML = '';
+                
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<p>Ваша корзина пуста</p>';
+                    cartTotalElement.textContent = '0';
+                    checkoutBtn.style.display = 'none';
+                    return;
+                }
+                
+                let total = 0;
+                
+                cart.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'cart-item';
+                    itemElement.dataset.id = item.id;
+                    
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    
+                    itemElement.innerHTML = `
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.price} руб. × ${item.quantity} = ${itemTotal} руб.</p>
+                        </div>
+                        <div class="cart-item-actions">
+                            <button class="btn decrease">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="btn increase">+</button>
+                            <button class="btn remove">Удалить</button>
+                        </div>
+                    `;
+                    
+                    cartItemsContainer.appendChild(itemElement);
+                });
+                
+                cartTotalElement.textContent = total;
+                checkoutBtn.style.display = 'block';
+            }
+            
+            // Обработка действий с корзиной
+            cartItemsContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('increase') || 
+                    e.target.classList.contains('decrease') || 
+                    e.target.classList.contains('remove')) {
+                    
+                    const itemElement = e.target.closest('.cart-item');
+                    const itemId = parseInt(itemElement.dataset.id);
+                    
+                    let cart = JSON.parse(localStorage.getItem('cart'));
+                    const itemIndex = cart.findIndex(item => item.id === itemId);
+                    
+                    if (e.target.classList.contains('increase')) {
+                        cart[itemIndex].quantity += 1;
+                    } else if (e.target.classList.contains('decrease')) {
+                        if (cart[itemIndex].quantity > 1) {
+                            cart[itemIndex].quantity -= 1;
+                        } else {
+                            cart.splice(itemIndex, 1);
+                        }
+                    } else if (e.target.classList.contains('remove')) {
+                        cart.splice(itemIndex, 1);
+                    }
+                    
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCart();
+                }
+            });
+            
+            // Оформление заказа
+            checkoutBtn.addEventListener('click', function() {
+                alert('Заказ оформлен! Спасибо за покупку.');
+                localStorage.removeItem('cart');
+                updateCart();
+            });
+            
+            // Инициализация корзины
+            updateCart();
+        });
+    </script>
+</body>
+</html>
