@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Админ-панель - ФудСити Дистрибьютор</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
     <style>
         .admin-menu {
             display: flex;
@@ -63,7 +63,7 @@
 
     <main>
         <section>
-            <h2>Административная панель</h2>
+            <!-- Убрали дублирующий заголовок "Управление товарами" -->
             <p>Добро пожаловать в панель управления сайтом.</p>
             
             <div class="admin-stats">
@@ -103,5 +103,14 @@
             document.getElementById('productsCount').textContent = products.length;
         });
     </script>
+    <div id="confirmModal" class="confirm-modal">
+        <div class="confirm-box">
+            <p>Вы уверены, что хотите выйти из аккаунта?</p>
+            <div class="confirm-buttons">
+                <button id="confirmLogout" class="btn">Да, выйти</button>
+                <button id="cancelLogout" class="btn btn-cancel">Отмена</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

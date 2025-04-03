@@ -8,15 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // Обработка выхода из системы
-    const logoutBtn = document.getElementById('logout');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            localStorage.removeItem('currentUser');
-            window.location.href = '../index.html';
-        });
-    }
+    
 
     // Обновление года в футере
     const yearElement = document.getElementById('year');
@@ -37,194 +29,194 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Управление товарами (для страницы products.html в админке)
-    if (document.getElementById('productsContainer')) {
-        // Загрузка товаров
-        let products = JSON.parse(localStorage.getItem('products')) || [];
-        const productsContainer = document.getElementById('productsContainer');
+    // В разделе "Управление товарами" заменим текущий код на:
+
+// Управление товарами (для страницы products.html в админке)
+if (document.getElementById('productsContainer')) {
+    // Загрузка товаров
+    let products = JSON.parse(localStorage.getItem('products')) || [];
+    const productsContainer = document.getElementById('productsContainer');
+    
+    // Отображение товаров
+    function displayProducts() {
+        productsContainer.innerHTML = '';
         
-        // Отображение товаров
-        function displayProducts() {
-            productsContainer.innerHTML = '';
+        products.forEach(product => {
+            const productElement = document.createElement('div');
+            productElement.className = 'product admin-product';
+            productElement.dataset.id = product.id;
             
-            products.forEach(product => {
-                const productElement = document.createElement('div');
-                productElement.className = 'product';
-                productElement.dataset.id = product.id;
-                
-                productElement.innerHTML = `
-                    <h3>${product.name}</h3>
-                    <p>Категория: ${product.category}</p>
-                    <p>Описание: ${product.description}</p>
-                    <p>Вес: ${product.weight}</p>
-                    <p class="price">${product.price} руб.</p>
+            productElement.innerHTML = `
+                <h3>${product.name}</h3>
+                <p>Категория: ${getCategoryName(product.category)}</p>
+                <p>Описание: ${product.description}</p>
+                <p>Вес: ${product.weight}</p>
+                <p class="price">${product.price} руб.</p>
+                <div class="admin-product-actions">
                     <button class="btn edit-product">Редактировать</button>
                     <button class="btn delete-product">Удалить</button>
-                `;
-                
-                productsContainer.appendChild(productElement);
-            });
+                </div>
+            `;
             
-            // Кнопка добавления нового товара
-            const addBtn = document.createElement('button');
-            addBtn.className = 'btn add-product';
-            addBtn.textContent = 'Добавить товар';
-            addBtn.style.marginTop = '20px';
-            productsContainer.appendChild(addBtn);
-        }
+            productsContainer.appendChild(productElement);
+        });
+    }
+    
+    // Получение названия категории
+    function getCategoryName(category) {
+        const categories = {
+            'meat': 'Мясные продукты',
+            'dairy': 'Молочные продукты',
+            'grocery': 'Бакалея'
+        };
+        return categories[category] || category;
+    }
+    
+    // Отображаем товары
+    displayProducts();
+    
+    // Обработчики событий
+    productsContainer.addEventListener('click', function(e) {
+        const productId = parseInt(e.target.closest('.product')?.dataset.id);
         
-        // Отображаем товары
-        displayProducts();
-        
-        // Обработчики событий
-        productsContainer.addEventListener('click', function(e) {
-            const productId = parseInt(e.target.closest('.product')?.dataset.id);
-            
-            if (e.target.classList.contains('delete-product')) {
-                if (confirm('Вы уверены, что хотите удалить этот товар?')) {
-                    products = products.filter(p => p.id !== productId);
-                    localStorage.setItem('products', JSON.stringify(products));
-                    displayProducts();
-                }
-            } else if (e.target.classList.contains('edit-product')) {
-                const product = products.find(p => p.id === productId);
-                editProduct(product);
-            } else if (e.target.classList.contains('add-product')) {
-                addProduct();
+        if (e.target.classList.contains('delete-product')) {
+            if (confirm('Вы уверены, что хотите удалить этот товар?')) {
+                products = products.filter(p => p.id !== productId);
+                localStorage.setItem('products', JSON.stringify(products));
+                displayProducts();
             }
+        } else if (e.target.classList.contains('edit-product')) {
+            const product = products.find(p => p.id === productId);
+            editProduct(product);
+        }
+    });
+    
+    // Добавление товара
+    if (document.getElementById('addProductBtn')) {
+        document.getElementById('addProductBtn').addEventListener('click', addProduct);
+    }
+    
+    // Функция редактирования товара
+    function editProduct(product) {
+        const formHtml = `
+            <div class="product-form">
+                <h3>Редактирование товара</h3>
+                <form id="editProductForm">
+                    <input type="hidden" id="edit-id" value="${product.id}">
+                    <div class="form-group">
+                        <label for="edit-name">Название:</label>
+                        <input type="text" id="edit-name" value="${product.name}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-category">Категория:</label>
+                        <select id="edit-category" required>
+                            <option value="meat" ${product.category === 'meat' ? 'selected' : ''}>Мясные продукты</option>
+                            <option value="dairy" ${product.category === 'dairy' ? 'selected' : ''}>Молочные продукты</option>
+                            <option value="grocery" ${product.category === 'grocery' ? 'selected' : ''}>Бакалея</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-price">Цена:</label>
+                        <input type="number" id="edit-price" value="${product.price}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-weight">Вес:</label>
+                        <input type="text" id="edit-weight" value="${product.weight}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-description">Описание:</label>
+                        <textarea id="edit-description" required>${product.description}</textarea>
+                    </div>
+                    <button type="submit" class="btn">Сохранить</button>
+                    <button type="button" class="btn cancel-edit">Отмена</button>
+                </form>
+            </div>
+        `;
+        
+        productsContainer.innerHTML = formHtml;
+        
+        // Обработка формы
+        document.getElementById('editProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const updatedProduct = {
+                id: product.id,
+                name: document.getElementById('edit-name').value,
+                category: document.getElementById('edit-category').value,
+                price: parseFloat(document.getElementById('edit-price').value),
+                weight: document.getElementById('edit-weight').value,
+                description: document.getElementById('edit-description').value
+            };
+            
+            products = products.map(p => p.id === product.id ? updatedProduct : p);
+            localStorage.setItem('products', JSON.stringify(products));
+            displayProducts();
         });
         
-        // Функция редактирования товара
-        function editProduct(product) {
-            const formHtml = `
-                <div class="product-form">
-                    <h3>Редактирование товара</h3>
-                    <form id="editProductForm">
-                        <input type="hidden" id="edit-id" value="${product.id}">
-                        <div class="form-group">
-                            <label for="edit-name">Название:</label>
-                            <input type="text" id="edit-name" value="${product.name}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-category">Категория:</label>
-                            <select id="edit-category" required>
-                                <option value="meat" ${product.category === 'meat' ? 'selected' : ''}>Мясные продукты</option>
-                                <option value="dairy" ${product.category === 'dairy' ? 'selected' : ''}>Молочные продукты</option>
-                                <option value="grocery" ${product.category === 'grocery' ? 'selected' : ''}>Бакалея</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-price">Цена:</label>
-                            <input type="number" id="edit-price" value="${product.price}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-weight">Вес:</label>
-                            <input type="text" id="edit-weight" value="${product.weight}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-description">Описание:</label>
-                            <textarea id="edit-description" required>${product.description}</textarea>
-                        </div>
-                        <button type="submit" class="btn">Сохранить</button>
-                        <button type="button" class="btn cancel-edit">Отмена</button>
-                    </form>
-                </div>
-            `;
-            
-            const formContainer = document.createElement('div');
-            formContainer.innerHTML = formHtml;
-            productsContainer.innerHTML = '';
-            productsContainer.appendChild(formContainer);
-            
-            // Обработка формы
-            document.getElementById('editProductForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const updatedProduct = {
-                    id: product.id,
-                    name: document.getElementById('edit-name').value,
-                    category: document.getElementById('edit-category').value,
-                    price: parseFloat(document.getElementById('edit-price').value),
-                    weight: document.getElementById('edit-weight').value,
-                    description: document.getElementById('edit-description').value
-                };
-                
-                products = products.map(p => p.id === product.id ? updatedProduct : p);
-                localStorage.setItem('products', JSON.stringify(products));
-                displayProducts();
-            });
-            
-            // Отмена редактирования
-            document.querySelector('.cancel-edit').addEventListener('click', function() {
-                displayProducts();
-            });
-        }
-        
-        // Функция добавления товара
-        function addProduct() {
-            const formHtml = `
-                <div class="product-form">
-                    <h3>Добавление товара</h3>
-                    <form id="addProductForm">
-                        <div class="form-group">
-                            <label for="add-name">Название:</label>
-                            <input type="text" id="add-name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="add-category">Категория:</label>
-                            <select id="add-category" required>
-                                <option value="meat">Мясные продукты</option>
-                                <option value="dairy">Молочные продукты</option>
-                                <option value="grocery">Бакалея</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="add-price">Цена:</label>
-                            <input type="number" id="add-price" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="add-weight">Вес:</label>
-                            <input type="text" id="add-weight" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="add-description">Описание:</label>
-                            <textarea id="add-description" required></textarea>
-                        </div>
-                        <button type="submit" class="btn">Добавить</button>
-                        <button type="button" class="btn cancel-add">Отмена</button>
-                    </form>
-                </div>
-            `;
-            
-            const formContainer = document.createElement('div');
-            formContainer.innerHTML = formHtml;
-            productsContainer.innerHTML = '';
-            productsContainer.appendChild(formContainer);
-            
-            // Обработка формы
-            document.getElementById('addProductForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const newProduct = {
-                    id: Date.now(),
-                    name: document.getElementById('add-name').value,
-                    category: document.getElementById('add-category').value,
-                    price: parseFloat(document.getElementById('add-price').value),
-                    weight: document.getElementById('add-weight').value,
-                    description: document.getElementById('add-description').value
-                };
-                
-                products.push(newProduct);
-                localStorage.setItem('products', JSON.stringify(products));
-                displayProducts();
-            });
-            
-            // Отмена добавления
-            document.querySelector('.cancel-add').addEventListener('click', function() {
-                displayProducts();
-            });
-        }
+        // Отмена редактирования
+        document.querySelector('.cancel-edit').addEventListener('click', displayProducts);
     }
+    
+    // Функция добавления товара
+    function addProduct() {
+        const formHtml = `
+            <div class="product-form">
+                <h3>Добавление товара</h3>
+                <form id="addProductForm">
+                    <div class="form-group">
+                        <label for="add-name">Название:</label>
+                        <input type="text" id="add-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-category">Категория:</label>
+                        <select id="add-category" required>
+                            <option value="meat">Мясные продукты</option>
+                            <option value="dairy">Молочные продукты</option>
+                            <option value="grocery">Бакалея</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-price">Цена:</label>
+                        <input type="number" id="add-price" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-weight">Вес:</label>
+                        <input type="text" id="add-weight" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-description">Описание:</label>
+                        <textarea id="add-description" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Добавить</button>
+                    <button type="button" class="btn cancel-add">Отмена</button>
+                </form>
+            </div>
+        `;
+        
+        productsContainer.innerHTML = formHtml;
+        
+        // Обработка формы
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newProduct = {
+                id: Date.now(),
+                name: document.getElementById('add-name').value,
+                category: document.getElementById('add-category').value,
+                price: parseFloat(document.getElementById('add-price').value),
+                weight: document.getElementById('add-weight').value,
+                description: document.getElementById('add-description').value
+            };
+            
+            products.push(newProduct);
+            localStorage.setItem('products', JSON.stringify(products));
+            displayProducts();
+        });
+        
+        // Отмена добавления
+        document.querySelector('.cancel-add').addEventListener('click', displayProducts);
+    }
+}
 
     // Управление пользователями (для страницы users.html)
     if (document.getElementById('usersList')) {

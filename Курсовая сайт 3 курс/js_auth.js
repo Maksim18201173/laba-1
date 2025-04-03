@@ -86,14 +86,51 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Выход из системы
-    if (document.getElementById('logout')) {
-        document.getElementById('logout').addEventListener('click', function(e) {
+  // Выход из системы с модальным окном
+document.addEventListener('DOMContentLoaded', function() {
+    const logoutBtn = document.getElementById('logout');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            const confirmModal = document.getElementById('confirmModal');
+            if (confirmModal) {
+                confirmModal.style.display = 'flex';
+            } else {
+                // Если модального окна нет, просто выходим
+                localStorage.removeItem('currentUser');
+                window.location.href = '../index.html';
+            }
+        });
+    }
+
+    const confirmLogout = document.getElementById('confirmLogout');
+    if (confirmLogout) {
+        confirmLogout.addEventListener('click', function() {
             localStorage.removeItem('currentUser');
             window.location.href = '../index.html';
         });
     }
+
+    const cancelLogout = document.getElementById('cancelLogout');
+    if (cancelLogout) {
+        cancelLogout.addEventListener('click', function() {
+            const confirmModal = document.getElementById('confirmModal');
+            if (confirmModal) {
+                confirmModal.style.display = 'none';
+            }
+        });
+    }
+
+    // Закрытие по клику вне окна
+    const confirmModal = document.getElementById('confirmModal');
+    if (confirmModal) {
+        confirmModal.addEventListener('click', function(e) {
+            if (e.target === confirmModal) {
+                confirmModal.style.display = 'none';
+            }
+        });
+    }
+});
 });
 
 // Проверка авторизации

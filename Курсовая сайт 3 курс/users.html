@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Пользователи - ФудСити Дистрибьютор</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">  
     <style>
         .users-table {
             width: 100%;
@@ -32,15 +32,14 @@
             <p>Административная панель</p>
         </div>
         <nav>
-    <ul>
-        <li><a href="../index.html">На сайт</a></li>
-        <li><a href="../index.html">Главная</a></li>
-        <li><a href="../about.html">О нас</a></li>
-        <li><a href="../products.html">Товары</a></li>
-        <li><a href="index.html">Админ-панель</a></li>
-        <li><a href="#" id="logout">Выйти</a></li>
-    </ul>
-</nav>
+            <ul>
+                <li><a href="../index.html">На сайт</a></li>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="products.html">Товары</a></li>
+                <li><a href="users.html" class="active">Пользователи</a></li>
+                <li><a href="#" id="logout">Выйти</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main>
@@ -68,6 +67,7 @@
     </footer>
 
     <script src="../js_auth.js"></script>
+    <script src="../js_admin.js"></script>  
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Загрузка пользователей
@@ -87,5 +87,14 @@
             });
         });
     </script>
+    <div id="confirmModal" class="confirm-modal">
+        <div class="confirm-box">
+            <p>Вы уверены, что хотите выйти из аккаунта?</p>
+            <div class="confirm-buttons">
+                <button id="confirmLogout" class="btn">Да, выйти</button>
+                <button id="cancelLogout" class="btn btn-cancel">Отмена</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

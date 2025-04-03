@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление товарами - ФудСити Дистрибьютор</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>ФудСити Дистрибьютор</h1>
+            <p>Административная панель</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">На сайт</a></li>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="products.html" class="active">Товары</a></li>
+                <li><a href="users.html">Пользователи</a></li>
+                <li><a href="#" id="logout">Выйти</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Управление товарами</h2>
+            
+            <div class="admin-actions">
+                <button id="addProductBtn" class="btn">Добавить товар</button>
+            </div>
+            
+            <div class="products-grid" id="productsContainer">
+                <!-- Товары будут загружены через JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; <span id="year"></span> Официальный дистрибьютор ФудСити. Все права защищены.</p>
+    </footer>
+
+    <script src="../js_auth.js"></script>
+    <script src="../js_admin.js"></script>
+    <div id="confirmModal" class="confirm-modal">
+        <div class="confirm-box">
+            <p>Вы уверены, что хотите выйти из аккаунта?</p>
+            <div class="confirm-buttons">
+                <button id="confirmLogout" class="btn">Да, выйти</button>
+                <button id="cancelLogout" class="btn btn-cancel">Отмена</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
