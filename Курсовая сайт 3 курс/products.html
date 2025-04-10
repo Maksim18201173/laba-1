@@ -54,243 +54,240 @@
     <script src="js_script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            const isAdmin = currentUser && currentUser.isAdmin;
-            
-            if (isAdmin) {
-                document.getElementById('adminActions').style.display = 'block';
-            }
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const isAdmin = currentUser && currentUser.isAdmin;
+    
+    if (isAdmin) {
+        document.getElementById('adminActions').style.display = 'block';
+    }
 
-            const productsContainer = document.getElementById('productsContainer');
-            let products = JSON.parse(localStorage.getItem('products')) || [
-                { id: 1, name: 'Колбаса "ФудСити Премиум"', category: 'meat', price: 450, weight: '1 кг', description: 'Отборная колбаса высшего сорта' },
-                { id: 2, name: 'Сыр "ФудСити Гауда"', category: 'dairy', price: 320, weight: '500 г', description: 'Натуральный сыр из Голландии' },
-                { id: 3, name: 'Макароны "ФудСити Италия"', category: 'grocery', price: 85, weight: '400 г', description: 'Макароны из твердых сортов пшеницы' },
-                { id: 4, name: 'Ветчина "ФудСити Деликатес"', category: 'meat', price: 520, weight: '700 г', description: 'Нежная ветчина с натуральными специями' }
-            ];
+    const productsContainer = document.getElementById('productsContainer');
+    let products = JSON.parse(localStorage.getItem('products')) || [
+        { id: 1, name: 'Колбаса "ФудСити Премиум"', category: 'meat', price: 450, weight: '1 кг', description: 'Отборная колбаса высшего сорта' },
+        { id: 2, name: 'Сыр "ФудСити Гауда"', category: 'dairy', price: 320, weight: '500 г', description: 'Натуральный сыр из Голландии' },
+        { id: 3, name: 'Макароны "ФудСити Италия"', category: 'grocery', price: 85, weight: '400 г', description: 'Макароны из твердых сортов пшеницы' },
+        { id: 4, name: 'Ветчина "ФудСити Деликатес"', category: 'meat', price: 520, weight: '700 г', description: 'Нежная ветчина с натуральными специями' }
+    ];
+    
+    if (!localStorage.getItem('products')) {
+        localStorage.setItem('products', JSON.stringify(products));
+    }
+    
+    function displayProducts(productsToShow) {
+        productsContainer.innerHTML = '';
+        
+        productsToShow.forEach(product => {
+            const productElement = document.createElement('div');
+            productElement.className = 'product';
+            productElement.dataset.category = product.category;
+            productElement.dataset.id = product.id;
             
-            if (!localStorage.getItem('products')) {
-                localStorage.setItem('products', JSON.stringify(products));
-            }
-            
-            function displayProducts(productsToShow) {
-                productsContainer.innerHTML = '';
-                
-                productsToShow.forEach(product => {
-                    const productElement = document.createElement('div');
-                    productElement.className = 'product';
-                    productElement.dataset.category = product.category;
-                    productElement.dataset.id = product.id;
-                    
-                    let actionsHtml = '';
-                    if (isAdmin) {
-                        actionsHtml = `
-                            <div class="admin-product-actions">
-                                <button class="btn edit-product">Редактировать</button>
-                                <button class="btn delete-product">Удалить</button>
-                            </div>
-                        `;
-                    } else {
-                        actionsHtml = `<button class="btn add-to-cart">В корзину</button>`;
-                    }
-                    
-                    productElement.innerHTML = `
-    <h3>${product.name}</h3>
-    <p>${product.description}</p>
-    <p>Вес: ${product.weight}</p>
-    <p class="price">${product.price} руб.</p>
-    <div class="product-actions">
-        <button class="btn edit-product">Редактировать</button>
-        <button class="btn delete-product">Удалить</button>
-    </div>
-`;
-                    productsContainer.appendChild(productElement);
-                });
-            }
-            
-            displayProducts(products);
-            
-            const categoryBtns = document.querySelectorAll('.category-btn');
-            categoryBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    categoryBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const category = this.dataset.category;
-                    const filteredProducts = category === 'all' 
-                        ? products 
-                        : products.filter(p => p.category === category);
-                    
-                    displayProducts(filteredProducts);
-                });
-            });
-            
-            productsContainer.addEventListener('click', function(e) {
-                const productId = parseInt(e.target.closest('.product').dataset.id);
-                const product = products.find(p => p.id === productId);
-                
-                if (e.target.classList.contains('add-to-cart')) {
-                    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-                    const existingItem = cart.find(item => item.id === productId);
-                    
-                    if (existingItem) {
-                        existingItem.quantity += 1;
-                    } else {
-                        cart.push({
-                            id: product.id,
-                            name: product.name,
-                            price: product.price,
-                            quantity: 1
-                        });
-                    }
-                    
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    alert('Товар добавлен в корзину!');
-                }
-                else if (e.target.classList.contains('delete-product')) {
-                    if (confirm('Вы уверены, что хотите удалить этот товар?')) {
-                        products = products.filter(p => p.id !== productId);
-                        localStorage.setItem('products', JSON.stringify(products));
-                        displayProducts(products);
-                    }
-                }
-                else if (e.target.classList.contains('edit-product')) {
-                    editProduct(product);
-                }
-            });
-            
-            if (isAdmin && document.getElementById('addProductBtn')) {
-                document.getElementById('addProductBtn').addEventListener('click', addProduct);
-            }
-            
-            function editProduct(product) {
-                const formHtml = `
-                    <div class="product-form">
-                        <h3>Редактирование товара</h3>
-                        <form id="editProductForm">
-                            <input type="hidden" id="edit-id" value="${product.id}">
-                            <div class="form-group">
-                                <label for="edit-name">Название:</label>
-                                <input type="text" id="edit-name" value="${product.name}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="edit-category">Категория:</label>
-                                <select id="edit-category" required>
-                                    <option value="meat" ${product.category === 'meat' ? 'selected' : ''}>Мясные продукты</option>
-                                    <option value="dairy" ${product.category === 'dairy' ? 'selected' : ''}>Молочные продукты</option>
-                                    <option value="grocery" ${product.category === 'grocery' ? 'selected' : ''}>Бакалея</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="edit-price">Цена:</label>
-                                <input type="number" id="edit-price" value="${product.price}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="edit-weight">Вес:</label>
-                                <input type="text" id="edit-weight" value="${product.weight}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="edit-description">Описание:</label>
-                                <textarea id="edit-description" required>${product.description}</textarea>
-                            </div>
-                            <button type="submit" class="btn">Сохранить</button>
-                            <button type="button" class="btn cancel-edit">Отмена</button>
-                        </form>
+            let actionsHtml = '';
+            if (isAdmin) {
+                actionsHtml = `
+                    <div class="product-actions">
+                        <button class="btn edit-product">Редактировать</button>
+                        <button class="btn delete-product">Удалить</button>
                     </div>
                 `;
-                
-                productsContainer.innerHTML = formHtml;
-                
-                document.getElementById('editProductForm').addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const updatedProduct = {
-                        id: product.id,
-                        name: document.getElementById('edit-name').value,
-                        category: document.getElementById('edit-category').value,
-                        price: parseFloat(document.getElementById('edit-price').value),
-                        weight: document.getElementById('edit-weight').value,
-                        description: document.getElementById('edit-description').value
-                    };
-                    
-                    products = products.map(p => p.id === product.id ? updatedProduct : p);
-                    localStorage.setItem('products', JSON.stringify(products));
-                    displayProducts(products);
-                });
-                
-                document.querySelector('.cancel-edit').addEventListener('click', function() {
-                    displayProducts(products);
-                });
+            } else {
+                actionsHtml = `<button class="btn add-to-cart">В корзину</button>`;
             }
             
-            function addProduct() {
-                const formHtml = `
-                    <div class="product-form">
-                        <h3>Добавление товара</h3>
-                        <form id="addProductForm">
-                            <div class="form-group">
-                                <label for="add-name">Название:</label>
-                                <input type="text" id="add-name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="add-category">Категория:</label>
-                                <select id="add-category" required>
-                                    <option value="meat">Мясные продукты</option>
-                                    <option value="dairy">Молочные продукты</option>
-                                    <option value="grocery">Бакалея</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="add-price">Цена:</label>
-                                <input type="number" id="add-price" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="add-weight">Вес:</label>
-                                <input type="text" id="add-weight" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="add-description">Описание:</label>
-                                <textarea id="add-description" required></textarea>
-                            </div>
-                            <button type="submit" class="btn">Добавить</button>
-                            <button type="button" class="btn cancel-add">Отмена</button>
-                        </form>
-                    </div>
-                `;
-                
-                productsContainer.innerHTML = formHtml;
-                
-                document.getElementById('addProductForm').addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const newProduct = {
-                        id: Date.now(),
-                        name: document.getElementById('add-name').value,
-                        category: document.getElementById('add-category').value,
-                        price: parseFloat(document.getElementById('add-price').value),
-                        weight: document.getElementById('add-weight').value,
-                        description: document.getElementById('add-description').value
-                    };
-                    
-                    products.push(newProduct);
-                    localStorage.setItem('products', JSON.stringify(products));
-                    displayProducts(products);
-                });
-                
-                document.querySelector('.cancel-add').addEventListener('click', function() {
-                    displayProducts(products);
-                });
-            }
+            productElement.innerHTML = `
+                <h3>${product.name}</h3>
+                <p>${product.description}</p>
+                <p>Вес: ${product.weight}</p>
+                <p class="price">${product.price} руб.</p>
+                ${actionsHtml}
+            `;
+            productsContainer.appendChild(productElement);
         });
-    </script>
-    <div id="confirmModal" class="confirm-modal">
-        <div class="confirm-box">
-            <p>Вы уверены, что хотите выйти из аккаунта?</p>
-            <div class="confirm-buttons">
-                <button id="confirmLogout" class="btn">Да, выйти</button>
-                <button id="cancelLogout" class="btn btn-cancel">Отмена</button>
+    }
+    
+    displayProducts(products);
+    
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    categoryBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            categoryBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            const category = this.dataset.category;
+            const filteredProducts = category === 'all' 
+                ? products 
+                : products.filter(p => p.category === category);
+            
+            displayProducts(filteredProducts);
+        });
+    });
+    
+    productsContainer.addEventListener('click', function(e) {
+        const productId = parseInt(e.target.closest('.product').dataset.id);
+        const product = products.find(p => p.id === productId);
+        
+        if (e.target.classList.contains('add-to-cart')) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert('Товар добавлен в корзину!');
+        }
+        else if (e.target.classList.contains('delete-product') && isAdmin) {
+            if (confirm('Вы уверены, что хотите удалить этот товар?')) {
+                products = products.filter(p => p.id !== productId);
+                localStorage.setItem('products', JSON.stringify(products));
+                displayProducts(products);
+            }
+        }
+        else if (e.target.classList.contains('edit-product') && isAdmin) {
+            editProduct(product);
+        }
+    });
+    
+    if (isAdmin && document.getElementById('addProductBtn')) {
+        document.getElementById('addProductBtn').addEventListener('click', addProduct);
+    }
+    
+    function editProduct(product) {
+        const formHtml = `
+            <div class="product-form">
+                <h3>Редактирование товара</h3>
+                <form id="editProductForm">
+                    <input type="hidden" id="edit-id" value="${product.id}">
+                    <div class="form-group">
+                        <label for="edit-name">Название:</label>
+                        <input type="text" id="edit-name" value="${product.name}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-category">Категория:</label>
+                        <select id="edit-category" required>
+                            <option value="meat" ${product.category === 'meat' ? 'selected' : ''}>Мясные продукты</option>
+                            <option value="dairy" ${product.category === 'dairy' ? 'selected' : ''}>Молочные продукты</option>
+                            <option value="grocery" ${product.category === 'grocery' ? 'selected' : ''}>Бакалея</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-price">Цена:</label>
+                        <input type="number" id="edit-price" value="${product.price}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-weight">Вес:</label>
+                        <input type="text" id="edit-weight" value="${product.weight}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-description">Описание:</label>
+                        <textarea id="edit-description" required>${product.description}</textarea>
+                    </div>
+                    <button type="submit" class="btn">Сохранить</button>
+                    <button type="button" class="btn cancel-edit">Отмена</button>
+                </form>
             </div>
+        `;
+        
+        productsContainer.innerHTML = formHtml;
+        
+        document.getElementById('editProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const updatedProduct = {
+                id: product.id,
+                name: document.getElementById('edit-name').value,
+                category: document.getElementById('edit-category').value,
+                price: parseFloat(document.getElementById('edit-price').value),
+                weight: document.getElementById('edit-weight').value,
+                description: document.getElementById('edit-description').value
+            };
+            
+            products = products.map(p => p.id === product.id ? updatedProduct : p);
+            localStorage.setItem('products', JSON.stringify(products));
+            displayProducts(products);
+        });
+        
+        document.querySelector('.cancel-edit').addEventListener('click', function() {
+            displayProducts(products);
+        });
+    }
+    
+    function addProduct() {
+        const formHtml = `
+            <div class="product-form">
+                <h3>Добавление товара</h3>
+                <form id="addProductForm">
+                    <div class="form-group">
+                        <label for="add-name">Название:</label>
+                        <input type="text" id="add-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-category">Категория:</label>
+                        <select id="add-category" required>
+                            <option value="meat">Мясные продукты</option>
+                            <option value="dairy">Молочные продукты</option>
+                            <option value="grocery">Бакалея</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-price">Цена:</label>
+                        <input type="number" id="add-price" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-weight">Вес:</label>
+                        <input type="text" id="add-weight" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-description">Описание:</label>
+                        <textarea id="add-description" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Добавить</button>
+                    <button type="button" class="btn cancel-add">Отмена</button>
+                </form>
+            </div>
+        `;
+        
+        productsContainer.innerHTML = formHtml;
+        
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newProduct = {
+                id: Date.now(),
+                name: document.getElementById('add-name').value,
+                category: document.getElementById('add-category').value,
+                price: parseFloat(document.getElementById('add-price').value),
+                weight: document.getElementById('add-weight').value,
+                description: document.getElementById('add-description').value
+            };
+            
+            products.push(newProduct);
+            localStorage.setItem('products', JSON.stringify(products));
+            displayProducts(products);
+        });
+        
+        document.querySelector('.cancel-add').addEventListener('click', function() {
+            displayProducts(products);
+        });
+    }
+});
+    </script>
+   <div id="confirmModal" class="confirm-modal">
+    <div class="confirm-box">
+        <p>Вы уверены, что хотите выйти из аккаунта?</p>
+        <div class="confirm-buttons">
+            <button id="confirmLogout" class="btn">Да, выйти</button>
+            <button id="cancelLogout" class="btn btn-cancel">Отмена</button>
         </div>
     </div>
+</div>
 </body>
 </html>

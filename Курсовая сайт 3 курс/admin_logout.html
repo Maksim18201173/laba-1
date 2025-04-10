@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выход из системы - ФудСити Дистрибьютор</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .logout-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .logout-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>ФудСити Дистрибьютор</h1>
+            <p>Административная панель</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">На сайт</a></li>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="products.html">Товары</a></li>
+                <li><a href="users.html">Пользователи</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="logout-container">
+            <h2>Выход из системы</h2>
+            <p>Вы уверены, что хотите выйти из аккаунта администратора?</p>
+            <div class="logout-buttons">
+                <button id="confirmLogout" class="btn">Да, выйти</button>
+                <button id="cancelLogout" class="btn btn-cancel">Отмена</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; <span id="year"></span> Официальный дистрибьютор ФудСити. Все права защищены.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Установка текущего года в футере
+            document.getElementById('year').textContent = new Date().getFullYear();
+            
+            // Подтверждение выхода
+            document.getElementById('confirmLogout').addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                window.location.href = '../index.html';
+            });
+            
+            // Отмена выхода
+            document.getElementById('cancelLogout').addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>

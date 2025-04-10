@@ -7,153 +7,190 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'Максим',
             email: 'dorofeewo18@gmail.com',
             phone: '79636901826',
-            password: 'dorofeewo18201173', // В реальном приложении пароль должен быть хеширован!
+            password: 'dorofeewo18201173',
             isAdmin: true
         };
-        
         localStorage.setItem('users', JSON.stringify([defaultAdmin]));
     }
     
-    // Проверяем, авторизован ли пользователь
+    // Проверяем авторизацию
     checkAuth();
     
-    // Обработка формы регистрации
-    if (document.getElementById('registerForm')) {
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('reg-name').value;
-            const email = document.getElementById('reg-email').value;
-            const phone = document.getElementById('reg-phone').value;
-            const password = document.getElementById('reg-password').value;
-            const confirmPassword = document.getElementById('reg-confirm').value;
-            
-            if (password !== confirmPassword) {
-                alert('Пароли не совпадают!');
-                return;
-            }
-            
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            
-            // Проверяем, есть ли уже пользователь с таким email
-            if (users.some(u => u.email === email)) {
-                alert('Пользователь с таким email уже существует!');
-                return;
-            }
-            
-            const newUser = {
-                id: Date.now(),
-                name,
-                email,
-                phone,
-                password, // В реальном приложении пароль должен быть хеширован!
-                isAdmin: false
-            };
-            
-            users.push(newUser);
-            localStorage.setItem('users', JSON.stringify(users));
-            
-            alert('Регистрация прошла успешно! Теперь вы можете войти.');
-            window.location.href = 'login.html';
-        });
-    }
+    // Обработка форм регистрации и входа
+    initAuthForms();
     
-    // Обработка формы входа
-    if (document.getElementById('loginForm')) {
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            const user = users.find(u => u.email === email && u.password === password);
-            
-            if (user) {
-                // Сохраняем информацию о текущем пользователе
-                localStorage.setItem('currentUser', JSON.stringify({
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    isAdmin: user.isAdmin
-                }));
-                
-                alert('Вход выполнен успешно!');
-                window.location.href = 'index.html';
-            } else {
-                alert('Неверный email или пароль!');
-            }
-        });
-    }
+    // Инициализация кнопки выхода
+    initLogoutButton();
     
-  // Выход из системы с модальным окном
-document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация модального окна выхода
+    initLogoutModal();
+});
+
+// Инициализация кнопки выхода
+function initLogoutButton() {
     const logoutBtn = document.getElementById('logout');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            const confirmModal = document.getElementById('confirmModal');
-            if (confirmModal) {
-                confirmModal.style.display = 'flex';
-            } else {
-                // Если модального окна нет, просто выходим
+            const confirmLogout = confirm('Вы уверены, что хотите выйти из аккаунта?');
+            if (confirmLogout) {
                 localStorage.removeItem('currentUser');
-                window.location.href = '../index.html';
+                // Перенаправляем на главную страницу (index.html)
+                // Если мы в админ-панели, используем ../index.html
+                // Если на обычном сайте, просто index.html
+                const isAdminPage = window.location.pathname.includes('/admin/');
+                window.location.href = isAdminPage ? '../index.html' : 'index.html';
             }
         });
     }
+}
 
+// Инициализация модального окна выхода
+function initLogoutModal() {
+    // Подтверждение выхода
     const confirmLogout = document.getElementById('confirmLogout');
     if (confirmLogout) {
         confirmLogout.addEventListener('click', function() {
             localStorage.removeItem('currentUser');
-            window.location.href = '../index.html';
+            // Аналогично для модального окна
+            const isAdminPage = window.location.pathname.includes('/admin/');
+            window.location.href = isAdminPage ? '../index.html' : 'index.html';
         });
     }
 
+    // Отмена выхода
     const cancelLogout = document.getElementById('cancelLogout');
     if (cancelLogout) {
-        cancelLogout.addEventListener('click', function() {
-            const confirmModal = document.getElementById('confirmModal');
-            if (confirmModal) {
-                confirmModal.style.display = 'none';
-            }
-        });
+        cancelLogout.addEventListener('click', hideLogoutModal);
     }
+}
 
-    // Закрытие по клику вне окна
+// Показать модальное окно выхода
+function showLogoutModal() {
     const confirmModal = document.getElementById('confirmModal');
     if (confirmModal) {
-        confirmModal.addEventListener('click', function(e) {
-            if (e.target === confirmModal) {
-                confirmModal.style.display = 'none';
-            }
-        });
+        confirmModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     }
-});
-});
+}
+
+// Скрыть модальное окно выхода
+function hideLogoutModal() {
+    const confirmModal = document.getElementById('confirmModal');
+    if (confirmModal) {
+        confirmModal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
 
 // Проверка авторизации
 function checkAuth() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    updateAuthUI(currentUser);
+    protectAdminPages(currentUser);
+}
+
+// Обновление интерфейса в зависимости от авторизации
+function updateAuthUI(currentUser) {
     const authLink = document.getElementById('auth-link');
     const regLink = document.getElementById('reg-link');
     const adminLink = document.getElementById('admin-link');
+    const logoutBtn = document.getElementById('logout');
     
     if (currentUser) {
         if (authLink) authLink.textContent = currentUser.name;
         if (regLink) regLink.style.display = 'none';
-        
         if (currentUser.isAdmin && adminLink) {
             adminLink.style.display = 'inline-block';
         }
+        if (logoutBtn) logoutBtn.style.display = 'inline-block';
+    } else {
+        if (logoutBtn) logoutBtn.style.display = 'none';
     }
-    
-    // Защита админских страниц
+}
+
+// Защита админских страниц
+function protectAdminPages(currentUser) {
     if (window.location.pathname.includes('/admin/')) {
         if (!currentUser || !currentUser.isAdmin) {
             alert('Доступ запрещен! Требуются права администратора.');
             window.location.href = '../index.html';
         }
+    }
+}
+
+// Инициализация форм авторизации
+function initAuthForms() {
+    // Форма регистрации
+    if (document.getElementById('registerForm')) {
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleRegistration();
+        });
+    }
+    
+    // Форма входа
+    if (document.getElementById('loginForm')) {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleLogin();
+        });
+    }
+}
+
+// Обработка регистрации
+function handleRegistration() {
+    const name = document.getElementById('reg-name').value;
+    const email = document.getElementById('reg-email').value;
+    const phone = document.getElementById('reg-phone').value;
+    const password = document.getElementById('reg-password').value;
+    const confirmPassword = document.getElementById('reg-confirm').value;
+    
+    if (password !== confirmPassword) {
+        alert('Пароли не совпадают!');
+        return;
+    }
+    
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    
+    if (users.some(u => u.email === email)) {
+        alert('Пользователь с таким email уже существует!');
+        return;
+    }
+    
+    const newUser = {
+        id: Date.now(),
+        name,
+        email,
+        phone,
+        password,
+        isAdmin: false
+    };
+    
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('Регистрация прошла успешно! Теперь вы можете войти.');
+    window.location.href = 'login.html';
+}
+
+// Обработка входа
+function handleLogin() {
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.email === email && u.password === password);
+    
+    if (user) {
+        localStorage.setItem('currentUser', JSON.stringify({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin
+        }));
+        alert('Вход выполнен успешно!');
+        window.location.href = 'index.html';
+    } else {
+        alert('Неверный email или пароль!');
     }
 }
