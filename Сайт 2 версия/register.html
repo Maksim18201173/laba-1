@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ФудСити - Регистрация</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>ФудСити</h1>
+            <p>Свежие продукты каждый день</p>
+        </div>
+        <nav id="nav-menu">
+            <!-- Меню будет заполнено JavaScript -->
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="auth-form">
+            <h2>Регистрация</h2>
+            <form id="register-form">
+                <input type="text" id="register-name" placeholder="Имя" required>
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="Пароль" required>
+                <input type="password" id="register-confirm-password" placeholder="Подтвердите пароль" required>
+                <input type="text" id="register-address" placeholder="Адрес доставки">
+                <input type="tel" id="register-phone" placeholder="Телефон">
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+            <p>Уже есть аккаунт? <a href="#" onclick="loadPage('login')">Войдите</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 ФудСити. Все права защищены.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

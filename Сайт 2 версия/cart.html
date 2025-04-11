@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ФудСити - Корзина</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>ФудСити</h1>
+            <p>Свежие продукты каждый день</p>
+        </div>
+        <nav id="nav-menu">
+            <!-- Меню будет заполнено JavaScript -->
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="cart">
+            <h2>Ваша корзина</h2>
+            <div id="cart-items">
+                <!-- Товары в корзине будут загружены через JavaScript -->
+            </div>
+            <div class="cart-total">
+                <h3>Итого: <span id="total-price">0</span> руб.</h3>
+                <button id="checkout-btn" onclick="checkout()">Оформить заказ</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 ФудСити. Все права защищены.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

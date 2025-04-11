@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ФудСити - Продукты</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>ФудСити</h1>
+            <p>Свежие продукты каждый день</p>
+        </div>
+        <nav id="nav-menu">
+            <!-- Меню будет заполнено JavaScript -->
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="products">
+            <h2>Наши продукты</h2>
+            <div id="products-list" class="products-grid">
+                <!-- Продукты будут загружены через JavaScript -->
+            </div>
+            <div id="admin-controls" class="admin-controls" style="display: none;">
+                <h3>Панель администратора</h3>
+                <button onclick="showAddProductForm()">Добавить продукт</button>
+                <div id="add-product-form" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <span class="close" onclick="hideAddProductForm()">&times;</span>
+                        <h3>Добавить новый продукт</h3>
+                        <form id="new-product-form">
+                            <input type="text" id="product-name" placeholder="Название" required>
+                            <textarea id="product-description" placeholder="Описание" required></textarea>
+                            <input type="number" id="product-price" placeholder="Цена" step="0.01" required>
+                            <input type="text" id="product-image" placeholder="URL изображения">
+                            <button type="submit">Добавить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 ФудСити. Все права защищены.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
