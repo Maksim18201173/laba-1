@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Все продукты{% endblock %}
+
+{% block content %}
+    <h1>Наши продукты</h1>
+    
+    <div class="category-filter">
+        <a href="{{ url_for('products') }}" class="{% if not request.args.get('category') %}active{% endif %}">Все</a>
+        <a href="{{ url_for('products', category='Фрукты') }}" class="{% if request.args.get('category') == 'Фрукты' %}active{% endif %}">Фрукты</a>
+        <a href="{{ url_for('products', category='Молочные продукты') }}" class="{% if request.args.get('category') == 'Молочные продукты' %}active{% endif %}">Молочные продукты</a>
+        <a href="{{ url_for('products', category='Хлебобулочные изделия') }}" class="{% if request.args.get('category') == 'Хлебобулочные изделия' %}active{% endif %}">Хлебобулочные изделия</a>
+    </div>
+    
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <img src="{{ url_for('static', filename='images/' + product['image_url']) }}" alt="{{ product['name'] }}">
+            <h3>{{ product['name'] }}</h3>
+            <p class="price">{{ product['price'] }} руб.</p>
+            <a href="{{ url_for('product_detail', product_id=product['id']) }}" class="btn">Подробнее</a>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

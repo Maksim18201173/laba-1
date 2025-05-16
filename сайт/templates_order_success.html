@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Заказ оформлен{% endblock %}
+
+{% block content %}
+    <div class="order-success">
+        <h1>Спасибо за ваш заказ!</h1>
+        <p>Номер вашего заказа: <strong>#{{ order_id }}</strong></p>
+        <p>Наш менеджер свяжется с вами для подтверждения заказа.</p>
+        <a href="{{ url_for('index') }}" class="btn">Вернуться на главную</a>
+    </div>
+{% endblock %}
