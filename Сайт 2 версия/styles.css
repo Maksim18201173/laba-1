@@ -13,7 +13,7 @@ body {
 }
 
 header {
-    background-color: #6d14b8;
+    background-color: #4CAF50;
     color: white;
     padding: 1rem;
     display: flex;
@@ -88,7 +88,7 @@ footer {
 }
 
 .hero button {
-    background-color: #4CAF50;
+    background-color: #b230bf;
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
@@ -99,7 +99,7 @@ footer {
 }
 
 .hero button:hover {
-    background-color: #3e8e41;
+    background-color: #b230bf;
 }
 
 .features {
@@ -120,7 +120,7 @@ footer {
 }
 
 .feature h3 {
-    color: #4CAF50;
+    color: #b230bf;
     margin-bottom: 0.5rem;
 }
 
@@ -133,14 +133,39 @@ footer {
 }
 
 .about h2 {
-    color: #4CAF50;
+    color: #b230bf;
     margin-bottom: 1.5rem;
     font-size: 2rem;
 }
 
+.about-intro {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.about-text {
+    flex: 1;
+}
+
+.about-image {
+    flex: 1;
+    text-align: center;
+}
+
+.about-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-height: 300px;
+    object-fit: contain;
+}
+
 .about h3 {
     margin: 1.5rem 0 1rem;
-    color: #2E7D32;
+    color: #b230bf;
 }
 
 .about ul {
@@ -152,9 +177,11 @@ footer {
     margin-bottom: 1rem;
 }
 
+
+
 /* Страница продуктов */
 .products h2 {
-    color: #4CAF50;
+    color: #b230bf;
     margin-bottom: 1.5rem;
     font-size: 2rem;
 }
@@ -201,14 +228,14 @@ footer {
 
 .product-price {
     font-weight: bold;
-    color: #4CAF50;
+    color: #b230bf;
     font-size: 1.2rem;
     margin-bottom: 1rem;
     display: block;
 }
 
 .add-to-cart {
-    background-color: #4CAF50;
+    background-color: #b230bf;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -219,7 +246,7 @@ footer {
 }
 
 .add-to-cart:hover {
-    background-color: #3e8e41;
+    background-color: #b230bf;
 }
 
 .admin-controls {
@@ -293,7 +320,7 @@ footer {
 }
 
 .modal-content button {
-    background-color: #4CAF50;
+    background-color: #b230bf;
     color: white;
     border: none;
     padding: 0.8rem;
@@ -303,12 +330,12 @@ footer {
 }
 
 .modal-content button:hover {
-    background-color: #3e8e41;
+    background-color: #b230bf;
 }
 
 /* Корзина */
 .cart h2 {
-    color: #4CAF50;
+    color: #b230bf;
     margin-bottom: 1.5rem;
     font-size: 2rem;
 }
@@ -385,7 +412,7 @@ footer {
 }
 
 #checkout-btn {
-    background-color: #4CAF50;
+    background-color: #b230bf;
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
@@ -396,7 +423,7 @@ footer {
 }
 
 #checkout-btn:hover {
-    background-color: #3e8e41;
+    background-color: #b230bf;
 }
 
 /* Формы авторизации */
@@ -410,7 +437,7 @@ footer {
 }
 
 .auth-form h2 {
-    color: #4CAF50;
+    color: #b230bf;
     margin-bottom: 1.5rem;
     text-align: center;
 }
@@ -425,7 +452,7 @@ footer {
 
 .auth-form button {
     width: 100%;
-    background-color: #4CAF50;
+    background-color: #b230bf;
     color: white;
     border: none;
     padding: 0.8rem;
@@ -436,7 +463,7 @@ footer {
 }
 
 .auth-form button:hover {
-    background-color: #3e8e41;
+    background-color: #b230bf;
 }
 
 .auth-form p {
@@ -445,7 +472,7 @@ footer {
 }
 
 .auth-form a {
-    color: #4CAF50;
+    color: #b230bf;
     text-decoration: none;
 }
 
@@ -462,7 +489,7 @@ footer {
 }
 
 .admin-panel h2 {
-    color: #4CAF50;
+    color: #b230bf;
     margin-bottom: 1.5rem;
     font-size: 2rem;
 }
@@ -483,7 +510,7 @@ footer {
 }
 
 .tab-btn.active {
-    border-bottom: 3px solid #4CAF50;
+    border-bottom: 3px solid #b230bf;
     font-weight: bold;
 }
 
@@ -570,4 +597,14 @@ tr:hover {
         overflow-x: auto;
         white-space: nowrap;
     }
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 50px;
+    width: auto;
 }
